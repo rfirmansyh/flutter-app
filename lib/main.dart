@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import '_layouts/App.dart';
 
-// void main() => runApp(MaterialApp (
-//   debugShowCheckedModeBanner: false,
-//   theme: ThemeData(primaryColor: Colors.red),
-//   home: App(),
-// ));
-
+/* 
+  Fungsi pertama kali dijalankan menginstance object '_layouts/App.dart'
+ */
 void main() => runApp(App());

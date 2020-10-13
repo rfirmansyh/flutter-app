@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import 'package:flutter_app/_base/Variable.dart';
 
+// class sidebar/drawer yang dipisah agar lebih mudah di manage
 class Sidebar extends StatelessWidget {
   Function onIconTap;
   Sidebar({Key key, @required this.onIconTap}) : super(key: key);
