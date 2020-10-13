@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import 'package:flutter_app/_models/DeveloperModel.dart';
+import 'package:flutter_app/_models/Developer.dart';
 import 'package:flutter_app/_base/Variable.dart';
 
-class Developer extends StatelessWidget {
+class View_Developer extends StatelessWidget {
   Function onPress;
 
-  Developer({Key key, @required this.onPress}) : super(key: key);
+  View_Developer({Key key, @required this.onPress}) : super(key: key);
   
 
   @override
   Widget build(BuildContext context) {
 
-    List<DeveloperModel> dev = DeveloperList().list;
+    List<Developer> dev = DeveloperList().list;
     Size mediaQuery = MediaQuery.of(context).size;
 
     return Container(

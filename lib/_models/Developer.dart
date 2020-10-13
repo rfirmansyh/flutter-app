@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class DeveloperModel {
+class Developer {
   int _id;
   String _imageurl;
   String _name;
   String _nim;
 
-  DeveloperModel({int id, String imageurl, String name, String nim}) : 
+  Developer({int id, String imageurl, String name, String nim}) : 
     _id = id, _imageurl = imageurl, _name = name, _nim = nim,
     assert(id != null), assert(imageurl != null), assert(name != null), assert(nim != null);
 
@@ -31,26 +31,26 @@ class DeveloperModel {
 }
 
 class DeveloperList {
-  List<DeveloperModel> developerList = [
-    DeveloperModel(
+  List<Developer> developerList = [
+    Developer(
       id: 0,
       imageurl: 'images/misc/png/dev_firman.png',
       name: 'Rahmad Firmansyah',
       nim: '182410102024'
     ),
-    DeveloperModel(
+    Developer(
       id: 0,
       imageurl: 'images/misc/png/dev_dinda.png',
       name: 'Dinda Dikrima Adi',
       nim: '182410102009'
     ),
-    DeveloperModel(
+    Developer(
       id: 0,
       imageurl: 'images/misc/png/dev_gisty.png',
       name: 'Augisty Wardah Faradisa',
       nim: '182410102029'
     ),
-    DeveloperModel(
+    Developer(
       id: 0,
       imageurl: 'images/misc/png/dev_tiar.png',
       name: 'Bahtiar Eka Ady Candra',
