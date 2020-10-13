@@ -20,16 +20,20 @@ class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
       title: Container(
         child: Row(
           children: [
-            SvgPicture.asset(
-              'images/logo/watklin.svg',
-              placeholderBuilder: (context) => CircularProgressIndicator(),
-              width: 24.0,
+            Container(
+              margin: EdgeInsets.only(right: 5),
+              child: SvgPicture.asset(
+                'images/logo/watklin.svg',
+                placeholderBuilder: (context) => CircularProgressIndicator(),
+                width: 24.0,
+              ),
             ),
             Text(
               appName,
               style: TextStyle(
                   color: HexColor(Variable.color('primary')),
-                  fontWeight: FontWeight.w800),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 12.0),
             ),
           ],
         )

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import 'package:flutter_app/_models/DeveloperModel.dart';
 import 'package:flutter_app/_base/Variable.dart';
-import 'package:flutter_app/pages/app/Main.dart';
 
 class Developer extends StatelessWidget {
   Function onPress;

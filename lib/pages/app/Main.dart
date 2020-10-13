@@ -20,7 +20,7 @@ class _MainState extends State<Main> {
     double sidebarSize = mediaQuery.width * 0.7;
 
     return Scaffold(
-        appBar: AppBarLayouts(appName: 'asdf'),
+        appBar: AppBarLayouts(appName: 'CLEAN WATER AND SANITATOIN : 6'),
         endDrawer: Container(
           width: sidebarSize,
           height: mediaQuery.height,
