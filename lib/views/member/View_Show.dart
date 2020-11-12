@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import 'package:flutter_app/_base/Variable.dart';
 import 'package:flutter_app/_layouts/AppBarLayouts.dart';
@@ -26,16 +27,20 @@ class _View_ShowState extends State<View_Show> {
 }
 
 class BodyShow extends StatelessWidget {
-  List<Widget> star = new List<Widget>();
-
   @override
   Widget build(BuildContext context) {
+    List<Widget> star = new List<Widget>();
     for (var i = 5; i >= 1; i--) {
       star.add(Row(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Container(
-            child: Text(i.toString()),
+            child: Text(
+              i.toString(), 
+              style: TextStyle(
+                fontSize: 10,
+                color: HexColor(Variable.color('dark')), fontWeight: FontWeight.bold),
+            ),
             margin: EdgeInsets.only(right: 10),
           ),
           Expanded(
@@ -62,6 +67,7 @@ class BodyShow extends StatelessWidget {
             children: <Widget>[
           HeaderText.Title("Rincian Hasil Sanitasi"),
           HeaderText.Subtitle("Detail Rincian Tempat Hasil Sanitasi"),
+          // GAMBAR TEMPAT
           Container(
             width: MediaQuery.of(context).size.width,
             height: 240,
@@ -74,6 +80,7 @@ class BodyShow extends StatelessWidget {
                     fit: BoxFit.cover,
                     image: AssetImage('images/food_places/1.png'))),
           ),
+          // NAMA TEMPAT 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -91,7 +98,6 @@ class BodyShow extends StatelessWidget {
                         )),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 12.0),
                     child: Text('Sumbersari, Jember',
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -136,9 +142,11 @@ class BodyShow extends StatelessWidget {
               ),
             ],
           ),
+          // DIVIDER
           Container(
               margin: EdgeInsets.symmetric(vertical: 10),
               child: Divider(color: HexColor(Variable.color('secondary-500')))),
+          // BUAT REVIEW
           Container(
             margin: EdgeInsets.only(bottom: 20),
             child: Row(
@@ -153,15 +161,16 @@ class BodyShow extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
                             color: HexColor(Variable.color('dark')),
-                            fontSize: 12.0,
+                            fontSize: 14.0,
                           )),
                     ),
                     Container(
+                      width: 180,
                       child: Text('Nilai dari mereka yang sudah berkunjung',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: HexColor(Variable.color('secondary')),
-                            fontSize: 8.0,
+                            fontSize: 10.0,
                           )),
                     ),
                   ],
@@ -189,69 +198,143 @@ class BodyShow extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Container(
-                  margin: EdgeInsets.only(right: 20),
-                  width: 82,
-                  height: 82,
-                  color: HexColor(Variable.color('link')),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(bottom: 5),
-                        child: Text(
-                          '4.1',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: HexColor(Variable.color('success')),
-                            fontSize: 24,
+          // HASIL REVIEW
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    margin: EdgeInsets.only(right: 20),
+                    width: 82,
+                    height: 82,
+                    color: HexColor(Variable.color('link')),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            '4.1',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: HexColor(Variable.color('success')),
+                              fontSize: 24,
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        '5',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: HexColor(Variable.color('secondary')),
-                          fontSize: 10,
-                        ),
-                      )
-                    ],
+                        Text(
+                          '5',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: HexColor(Variable.color('secondary')),
+                            fontSize: 10,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Column(children: star),
-              )
-            ],
-          )
+                Expanded(
+                  child: Column(children: star),
+                )
+              ],
+            ),
+          ),
+          // RATING AND COMMENT
+          CardComment(),
         ]));
   }
 }
 
-// $jsonfile;
-// $jsonfile_index;
-// foreach ($data as $i => $d) {
-//     if ($d['id'] == $id) {
-//         $jsonfile = $d;
-//         $jsonfile_index = $i;
-//     }
-// }
+class CardComment extends StatelessWidget {
 
-// $data_update = [
-//   'id' => $request->id,
-//   'title' => $request->title,
-//   'author' => $request->author,
-//   'content' => $request->content,
-//   'create_at' => Carbon:blalbal
-// ];
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 16),
+            child: Row(
+              children: [
+                Container(
+                  width: 42,
+                  height: 42,
+                  margin: EdgeInsets.only(right: 16),
+                  decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(color: HexColor(Variable.color('link'))),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('images/food_places/1.png'))),
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(bottom: 4.0),
+                        child: Text('Rahmad Firmansyah',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: HexColor(Variable.color('dark')),
+                              fontSize: 14.0,
+                            )),
+                      ),
+                      Container(
+                        width: 180,
+                        child: Text('2, 10 2020',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: HexColor(Variable.color('secondary')),
+                              fontSize: 10.0,
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          Container(
+            child: SmoothStarRating(
+              allowHalfRating: false,
+              isReadOnly:true,
+              starCount: 5,
+              rating: 3,
+              size: 20.0,
+              filledIconData: Icons.star,
+              halfFilledIconData: Icons.star,
+              color: HexColor(Variable.color('primary')),
+              borderColor: HexColor(Variable.color('primary')),
+              spacing:0.0
+            ),
+          ),
 
-// $data[jsonfile_index] = $data_update;
-// $data = json_encode($data, JSON_PRETTY_PRINT);
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: Text(
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Enim mollis dui, ut semper nibh sed at tempus nibh. Fringilla et faucibus morbi vitae ullamcorper. Ultrices purus habitant sit elit sit dignissim feugiat ultricies ullamcorper. Facilisi quam tortor sed viverra ultrices enim.',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 10,
+                color: HexColor(Variable.color('secondary'))
+              ),
+            ),
+          ),
+
+          Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: Divider(color: HexColor(Variable.color('secondary-500')))),
+        ],
+      ),
+    );
+  }
+}
