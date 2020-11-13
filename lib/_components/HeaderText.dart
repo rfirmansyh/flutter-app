@@ -6,9 +6,9 @@ import 'package:flutter_app/_base/Variable.dart';
 
 class HeaderText {
 
-  static Widget Title(String text) {
+  static Widget Title(String text, {EdgeInsets margin}) {
     return Container(
-      margin: EdgeInsets.only(bottom: 5.0),
+      margin: (margin == null) ? EdgeInsets.only(bottom: 5) : margin,
       child: Text(text,
           style: TextStyle(
             fontWeight: FontWeight.w800,

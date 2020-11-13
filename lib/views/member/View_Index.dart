@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_app/_base/Variable.dart';
 import 'package:flutter_app/_layouts/AppBarLayouts.dart';
 import 'package:flutter_app/_layouts/Sidebar.dart';
+import 'package:flutter_app/_layouts/NavbarBottom.dart';
 
 // component
 import 'package:flutter_app/_components/ContainerBase.dart';
@@ -20,53 +21,17 @@ class _View_IndexState extends State<View_Index> {
     FocusScopeNode currentFocus = FocusScope.of(context);
 
     return GestureDetector(
-        onTap: () {
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        child: Scaffold(
-            appBar: AppBarLayouts(appName: 'CLEAN WATER AND SANITATOIN : 6'),
-            body: BodyIndex(),
-            bottomNavigationBar: SizedBox(
-              height: 85,
-              child: BottomNavigationBar(
-                selectedItemColor: HexColor(Variable.color('primary')),
-                currentIndex: 1, // this will be set when a new tab is tapped
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Container(
-                        child: Icon(Icons.map),
-                        margin: EdgeInsets.only(bottom: 3)),
-                    title: Text(
-                      'Rincian Nilai \nWilayah',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 9),
-                    ),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                        child: Icon(Icons.fastfood),
-                        margin: EdgeInsets.only(bottom: 3)),
-                    title: Text(
-                      'Data Nilai \nTempat',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 9),
-                    ),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Container(
-                        child: Icon(Icons.explore),
-                        margin: EdgeInsets.only(bottom: 3)),
-                    title: Text(
-                      'Explore Berita \nSanitasi',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 9),
-                    ),
-                  ),
-                ],
-              ),
-            )));
+      onTap: () {
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+          appBar: AppBarLayouts(appName: 'CLEAN WATER AND SANITATOIN : 6'),
+          body: BodyIndex(),
+          bottomNavigationBar: NavbarBottom()
+      )
+    );
   }
 }
 
@@ -229,7 +194,6 @@ class BodyIndex extends StatefulWidget {
 
 class _BodyIndexState extends State<BodyIndex> {
   FocusNode _currentNode = new FocusNode();
-
 
   @override
   Widget build(BuildContext context) {
