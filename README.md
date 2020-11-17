@@ -35,4 +35,8 @@ AUGISTY WARDAH FARADISA 182410102029
 BAHTIAR EKA ADY CANDRA 182410102090
 =======
 BAHTIAR EKA ADY CANDRA 182410102090
+<<<<<<< HEAD
 >>>>>>> parent of 59e78f8... Update README.md
+=======
+=======
+>>>>>>> parent of 6846bf8... Update README.md
