@@ -8,10 +8,11 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Nunito'),
-      initialRoute: '/member',
+      initialRoute: '/',
       routes: routes,
     );
   }
+  children(Text text, Text text2) {}
 }
 
 

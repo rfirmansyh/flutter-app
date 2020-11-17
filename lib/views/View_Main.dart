@@ -19,6 +19,7 @@ class _View_MainState extends State<View_Main> {
   @override
   Widget build(BuildContext context) {
     Size mediaQuery = MediaQuery.of(context).size;
+    double sidebarSize = mediaQuery.width * 0.7;
 
     return Scaffold(
         appBar: AppBarLayouts(appName: 'CLEAN WATER AND SANITATOIN : 6'),
@@ -28,8 +29,7 @@ class _View_MainState extends State<View_Main> {
             _currentContainer = View_Developer(
               onPress: () {
                 setState(() {
-                  _currentContainer =
-                      View_MainContainer(height: mediaQuery.height);
+                  _currentContainer = View_MainContainer(height: mediaQuery.height);
                 });
               },
             );
@@ -93,9 +93,7 @@ class View_MainContainer extends StatelessWidget {
                       ],
                     )),
                 RaisedButton(
-                  onPressed: () {
-                    // Navigator.pushNamed(context, '/show');
-                  },
+                  onPressed: () {},
                   textColor: Colors.white,
                   padding: const EdgeInsets.only(
                       top: 12, bottom: 12, left: 24, right: 24),

@@ -15,8 +15,6 @@ class Variable {
         return '#FFFFFF';
       case 'light':
         return '#FBFBFF';
-      case 'link':
-        return '#F3F2FB';
       case 'secondary':
         return '#9D9D9D';
       case 'secondary-500':
