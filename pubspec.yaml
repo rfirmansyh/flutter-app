@@ -35,6 +35,7 @@ dev_dependencies:
   # flutter_view_widgets: ^1.0.6
   flutter_svg: ^0.18.1
   hexcolor: ^1.0.5
+  smooth_star_rating: ^1.1.1
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -51,6 +52,7 @@ flutter:
     - images/logo/
     - images/misc/svg/
     - images/misc/png/
+    - images/food_places/
     # - images/cute.gif
   #   - images/a_dot_ham.jpeg
 
