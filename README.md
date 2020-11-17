@@ -1,6 +1,5 @@
 # flutter-app
 For Flutter College Project 5th semester
-<<<<<<< Updated upstream
 
 Deskripsi Project :
 Tema SDGS 6 : Clean Water and Sanitation
@@ -24,14 +23,16 @@ dapat memberikan review pada kolom komentar mengenai pelayanan, cita rasa produk
 atau produk pedagang tersebut.
 
 Progress Update :
-- Halaman Login - User
-- Halaman Register - User
-- Halaman Team - User
+- Halaman Login
+- Halaman Register
+- Halaman Team
 
-
-Kelompok B Mobile (SDGs 6 - Pemerataan Air dan Sanitasi)
 Team : 
 DINDA DIKRIMA ADI 182410102009
 RAHMAD FIRMANSYAH 182410102024
 AUGISTY WARDAH FARADISA 182410102029
+<<<<<<< HEAD
 BAHTIAR EKA ADY CANDRA 182410102090
+=======
+BAHTIAR EKA ADY CANDRA 182410102090
+>>>>>>> parent of 59e78f8... Update README.md
