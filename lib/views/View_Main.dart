@@ -8,6 +8,7 @@ import 'package:flutter_app/_layouts/Sidebar.dart';
 
 import 'package:flutter_app/views/View_Developer.dart';
 
+// view main pertama dijalankan melalui konteks '/'
 class View_Main extends StatefulWidget {
   @override
   _View_MainState createState() => _View_MainState();

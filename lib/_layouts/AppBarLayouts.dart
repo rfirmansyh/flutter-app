@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import 'package:flutter_app/_base/Variable.dart';
 
+// class appbar yang dipisah agar lebih mudah di manage
 class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
   String appName;
   final AppBar appBar = AppBar();

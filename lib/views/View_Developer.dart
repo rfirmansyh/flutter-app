@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_app/_models/Developer.dart';
 import 'package:flutter_app/_base/Variable.dart';
 
+// view developer tempat nama" tim
 class View_Developer extends StatelessWidget {
   Function onPress;
 

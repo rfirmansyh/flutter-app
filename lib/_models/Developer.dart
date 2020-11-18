@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+// Model developer, nantinya model ini untuk manage data
 class Developer {
   int _id;
   String _imageurl;

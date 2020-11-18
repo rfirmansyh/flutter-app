@@ -1,3 +1,7 @@
+/* 
+  class helper agar mudah manage color seperti css ehehe
+ */
+
 class Variable {
   static color(String type) {
     switch (type) {
