@@ -95,7 +95,7 @@ class View_MainContainer extends StatelessWidget {
                     )),
                 RaisedButton(
                   onPressed: () {
-                    // Navigator.pushNamed(context, '/show');
+                    Navigator.pushNamed(context, '/member');
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.only(

@@ -16,6 +16,8 @@ class View_Index extends StatefulWidget {
 }
 
 class _View_IndexState extends State<View_Index> {
+  FocusNode _currentNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -28,7 +30,68 @@ class _View_IndexState extends State<View_Index> {
       },
       child: Scaffold(
           appBar: AppBarLayouts(appName: 'CLEAN WATER AND SANITATOIN : 6'),
-          body: BodyIndex(),
+          body: ContainerBase(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                HeaderText.Title("Apa Tempat Makanmu sudah sehat ?"),
+                HeaderText.Subtitle("Yuk Check Dulu di Watklin"),
+                Container(
+                  child: TextField(
+                    focusNode: _currentNode,
+                    decoration: InputDecoration(
+                      labelText: 'Enter your username',
+                      suffixIcon: Container(
+                          color: HexColor(Variable.color('primary')),
+                          padding: EdgeInsets.only(top: 0.0, right: 0.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Cari',
+                                style: TextStyle(
+                                    color: HexColor(Variable.color('white')),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )),
+                      labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: _currentNode.hasFocus
+                              ? HexColor(Variable.color('primary'))
+                              : HexColor(Variable.color('secondary')),
+                          fontSize: 14.0),
+                      isDense: true,
+                      hintText: 'Enter a search term',
+                      hintStyle: TextStyle(
+                          color: HexColor(Variable.color('secondary')),
+                          fontSize: 14.0),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: HexColor(Variable.color('primary'))),
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 400,
+                  padding: EdgeInsets.only(top: 20, bottom: 60),
+                  child: ListView.builder(
+                    itemCount: 3,
+                    itemBuilder: (BuildContext context, int index) {
+                       return CardFoodPlace();
+                    }
+                  ),
+                )
+              ],
+            ),
+          ),
           bottomNavigationBar: NavbarBottom()
       )
     );
@@ -41,7 +104,7 @@ class CardFoodPlace extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/member/show', 
-          arguments: "asu"
+          arguments: "tesss"
         );
         print('asdf');
       },
@@ -186,70 +249,3 @@ class CardFoodPlace extends StatelessWidget {
   }
 }
 
-// BodyIndex : Launch first when View_Index init
-class BodyIndex extends StatefulWidget {
-  @override
-  _BodyIndexState createState() => _BodyIndexState();
-}
-
-class _BodyIndexState extends State<BodyIndex> {
-  FocusNode _currentNode = new FocusNode();
-
-  @override
-  Widget build(BuildContext context) {
-    return ContainerBase(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          HeaderText.Title("Apa Tempat Makanmu sudah sehat ?"),
-          HeaderText.Subtitle("Yuk Check Dulu di Watklin"),
-          Container(
-            margin: EdgeInsets.only(bottom: 40.0),
-            child: TextField(
-              focusNode: _currentNode,
-              decoration: InputDecoration(
-                labelText: 'Enter your username',
-                suffixIcon: Container(
-                    color: HexColor(Variable.color('primary')),
-                    padding: EdgeInsets.only(top: 0.0, right: 0.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Cari',
-                          style: TextStyle(
-                              color: HexColor(Variable.color('white')),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    )),
-                labelStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: _currentNode.hasFocus
-                        ? HexColor(Variable.color('primary'))
-                        : HexColor(Variable.color('secondary')),
-                    fontSize: 14.0),
-                isDense: true,
-                hintText: 'Enter a search term',
-                hintStyle: TextStyle(
-                    color: HexColor(Variable.color('secondary')),
-                    fontSize: 14.0),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(color: HexColor(Variable.color('primary'))),
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              ),
-            ),
-          ),
-          CardFoodPlace(),
-        ],
-      ),
-    );
-  }
-}
