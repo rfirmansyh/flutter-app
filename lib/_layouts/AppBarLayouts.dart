@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import 'package:flutter_app/_base/Variable.dart';
+import 'package:flutter_app/_base/color.dart';
 
 class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
   String appName;
   final AppBar appBar = AppBar();
 
-  AppBarLayouts({Key key, @required this.appName})
-      : super(key: key);
+  AppBarLayouts({Key key, @required this.appName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +30,16 @@ class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
             Text(
               appName,
               style: TextStyle(
-                  color: HexColor(Variable.color('primary')),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 12.0),
+                color: color('primary'),
+                fontWeight: FontWeight.w800,
+                fontSize: 12.0),
             ),
           ],
         )
       ),
       actions: <Widget>[
         IconButton(
-          color: HexColor(Variable.color('primary')),
+          color: color('primary'),
           icon: Icon(Icons.menu),
           onPressed: () {
             Scaffold.of(context).openEndDrawer();

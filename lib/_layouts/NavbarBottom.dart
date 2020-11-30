@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-import 'package:flutter_app/_base/Variable.dart';
+import 'package:flutter_app/_base/color.dart';
 
 class NavbarBottom extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _NavbarBottomState extends State<NavbarBottom> {
             Container (
               width: 1,
               height: 50,
-              color: HexColor(Variable.color('link')),
+              color: color('link'),
             ),
             FlatButton(
               padding: EdgeInsets.all(10.0),
@@ -58,7 +58,7 @@ class _NavbarBottomState extends State<NavbarBottom> {
             Container (
               width: 1,
               height: 50,
-              color: HexColor(Variable.color('link')),
+              color: color('link'),
             ),
             FlatButton(
               padding: EdgeInsets.all(10.0),
