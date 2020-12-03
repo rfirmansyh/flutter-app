@@ -9,7 +9,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Nunito'),
-      initialRoute: '/',
+      initialRoute: '/tempats/show',
       routes: routes,
     );
   }

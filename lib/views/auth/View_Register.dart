@@ -5,16 +5,15 @@ import 'package:flutter_app/_components/FormControl.dart';
 import 'package:flutter_app/_components/HeaderText.dart';
 import 'package:flutter_app/_layouts/AppBarLayouts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter_app/_base/color.dart';
 
-class View_login extends StatefulWidget {
+class View_Register extends StatefulWidget {
   @override
-  _View_loginState createState() => _View_loginState();
+  _View_RegisterState createState() => _View_RegisterState();
 }
 
-class _View_loginState extends State<View_login> {
+class _View_RegisterState extends State<View_Register> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,15 +28,24 @@ class _View_loginState extends State<View_login> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
-                  HeaderText.Title('Selamat Datang Kembali'),
-                  HeaderText.Subtitle('Lorem Ipsum Dolor sit amet amet'),
+                  HeaderText.Title('Mendaftar'),
+                  HeaderText.Subtitle('Buat Akun Baru'),
+                  FormControl(
+                    labelText: "Nama Lengkap",
+                    hintText: "Ex: John Doe",
+                  ),
                   FormControl(
                     labelText: "Username",
-                    hintText: "Input Your username here...",
+                    hintText: "Ex: johndoe",
                   ),
                   FormControl(
                     labelText: "Password",
-                    hintText: "Input Your username here...",
+                    hintText: "Fill with the strong password",
+                    isPasswordField: true,
+                  ),
+                  FormControl(
+                    labelText: "Verifikasi Password",
+                    hintText: "Fill with password above",
                     isPasswordField: true,
                   ),
                   Row(
@@ -47,15 +55,15 @@ class _View_loginState extends State<View_login> {
                         margin: EdgeInsets.only(right: 10),
                         type: 'outline',
                         text: 'Register',
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/register');
-                        },
+                        onPressed: () {},
                         butonColor: color('primary'),
                       ),
                       Button(
                         type: 'solid',
                         text: 'Login',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
                         butonColor: color('primary'),
                       ),
                     ],

@@ -5,10 +5,15 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_app/_base/color.dart';
 
 class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
-  String appName;
   final AppBar appBar = AppBar();
+  String appName;
+  bool is_transparent;
 
-  AppBarLayouts({Key key, @required this.appName}) : super(key: key);
+  AppBarLayouts({
+    Key key, 
+    @required this.appName,
+    this.is_transparent
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

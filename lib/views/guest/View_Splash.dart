@@ -52,25 +52,7 @@ class View_Splash extends StatelessWidget {
                           ),
                         ],
                       )),
-                  RaisedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/member');
-                    },
-                    textColor: Colors.white,
-                    padding: const EdgeInsets.only(
-                        top: 12, bottom: 12, left: 24, right: 24),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    color: color('primary'),
-                    child: Text(
-                      'Mulai Sekarang',
-                      style: TextStyle(
-                          color: color('white'),
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
+                  // Button(),
                 ],
               ),
             ),
