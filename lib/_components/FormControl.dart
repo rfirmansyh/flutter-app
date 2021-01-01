@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
-
 import 'package:flutter_app/_base/color.dart';
 
 
@@ -9,11 +7,13 @@ class FormControl extends StatefulWidget {
   String hintText;
   bool isPasswordField;
   bool isTextArea;
+  bool isNumber;
   IconData prefixIcon;
   IconData suffixIcon;
   EdgeInsets margin;
   Function onChange;
-  Function onSubmitted;
+  Function validator;
+  TextEditingController controller;
 
   FormControl({
     Key key,
@@ -21,11 +21,13 @@ class FormControl extends StatefulWidget {
     @required this.hintText,
     this.isTextArea = false,
     this.isPasswordField = false,
+    this.isNumber = false,
     this.margin,
     this.prefixIcon,
     this.suffixIcon,
     this.onChange,
-    this.onSubmitted
+    this.validator,
+    this.controller
   }) : super(key: key);
 
   @override
@@ -86,7 +88,8 @@ class _FormControlState extends State<FormControl> {
 
     return Container(
       margin: widget.margin != null ? widget.margin : EdgeInsets.only(bottom: 10),
-      child: TextField(
+      child: TextFormField(
+        controller: widget.controller,
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) {
@@ -95,11 +98,14 @@ class _FormControlState extends State<FormControl> {
         },
         focusNode: _focusNode,
         onChanged: widget.onChange,
-        onSubmitted: widget.onSubmitted,
         obscureText: _isHidePass,
-        maxLines: null,
-        keyboardType: widget.isTextArea ? TextInputType.multiline : TextInputType.text,
+        maxLines: widget.isTextArea ? null : 1,
+        minLines: widget.isTextArea ? 6 : null,
+        validator: widget.validator,
+        textAlignVertical: TextAlignVertical.top,
+        keyboardType: widget.isTextArea ? TextInputType.multiline : widget.isNumber ? TextInputType.number : TextInputType.text,
         decoration: InputDecoration(
+          alignLabelWithHint: true,
           fillColor: color('light'),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(

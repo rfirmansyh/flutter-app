@@ -32,8 +32,7 @@ class _ImagePickerTestState extends State<ImagePickerTest> {
     return FutureBuilder<File>(
       future: file,
       builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            null != snapshot.data) {
+        if (snapshot.connectionState == ConnectionState.done && null != snapshot.data) {
           tmpFile = snapshot.data;
           base64Image = base64Encode(snapshot.data.readAsBytesSync());
           return Flexible(

@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_app/api.dart';
+
 import 'package:flutter_app/_components/Button.dart';
 import 'package:flutter_app/_components/ContainerBase.dart';
 import 'package:flutter_app/_components/FormControl.dart';
 import 'package:flutter_app/_components/HeaderText.dart';
 import 'package:flutter_app/_layouts/AppBarLayouts.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,6 +22,24 @@ class View_login extends StatefulWidget {
 }
 
 class _View_loginState extends State<View_login> {
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isLoading = false;
+  
+  var email;
+  var password;
+
+  _showMsg(msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+      )
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,45 +47,67 @@ class _View_loginState extends State<View_login> {
         overflow: Overflow.clip,
         children: [
           Scaffold(
+            key: _scaffoldKey,
             appBar: AppBarLayouts(appName: 'CLEAN WATER AND SANITATOIN : 6'),
             body: ContainerBase(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [
-                  HeaderText.Title('Selamat Datang Kembali'),
-                  HeaderText.Subtitle('Lorem Ipsum Dolor sit amet amet'),
-                  FormControl(
-                    labelText: "Username",
-                    hintText: "Input Your username here...",
-                  ),
-                  FormControl(
-                    labelText: "Password",
-                    hintText: "Input Your username here...",
-                    isPasswordField: true,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget> [
-                      Button(
-                        margin: EdgeInsets.only(right: 10),
-                        type: 'outline',
-                        text: 'Register',
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/register');
-                        },
-                        butonColor: color('primary'),
-                      ),
-                      Button(
-                        type: 'solid',
-                        text: 'Login',
-                        onPressed: () {},
-                        butonColor: color('primary'),
-                      ),
-                    ],
-                  )
-                ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget> [
+                    HeaderText.Title('Selamat Datang Kembali'),
+                    HeaderText.Subtitle('Lorem Ipsum Dolor sit amet amet'),
+                    FormControl(
+                      labelText: "Username",
+                      hintText: "Input Your username here...",
+                      validator: (emailValue) {
+                        // if (emailValue.isEmpty) {
+                        //   return 'Please enter email';
+                        // }
+                        email = emailValue;
+                        return null;
+                      },
+                    ),
+                    FormControl(
+                      labelText: "Password",
+                      hintText: "Input Your Password here...",
+                      validator: (passwordValue) {
+                        // if (passwordValue.isEmpty) {
+                        //   return 'Please enter some text';
+                        // }
+                        password = passwordValue;
+                        return null;
+                      },
+                      isPasswordField: true,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget> [
+                        Button(
+                          margin: EdgeInsets.only(right: 10),
+                          type: 'outline',
+                          text: 'Register',
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          butonColor: color('primary'),
+                        ),
+                        Button(
+                          type: 'solid',
+                          text:  _isLoading == true ? 'Proccessing...' : 'Login',
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              _login();
+                            }
+                          },
+                          butonColor: color('primary'),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             )
           ),
@@ -82,5 +129,33 @@ class _View_loginState extends State<View_login> {
         ],
       ),
     );
+  }
+
+  void _login() async{
+    setState(() {
+      _isLoading = true;
+    });
+    var data = {
+      'email' : 'fsyah7052@gmail.com',
+      'password' : '123123'
+    };
+
+    var res = await Network().authData(data, '/login');
+    var body = json.decode(res.body);
+    print(body);
+    if(body['data'] != null){
+      print(body['data']['name']);
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', json.encode(body['data']['api_token']));
+      localStorage.setString('user', json.encode(body['data']));
+      Navigator.pushNamed(context, '/tempats');
+    }else{
+      print(body['status']);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+
   }
 }

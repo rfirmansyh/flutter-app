@@ -19,9 +19,9 @@ class HeaderText {
     );
   }
 
-  static Widget Subtitle(String text) {
+  static Widget Subtitle(String text, {EdgeInsets margin}) {
     return Container(
-      margin: EdgeInsets.only(bottom: 30.0),
+      margin: (margin == null) ? EdgeInsets.only(bottom: 5) : margin,
       child: Text(text,
         style: TextStyle(
           fontWeight: FontWeight.w600,

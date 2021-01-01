@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:flutter_app/_components/Button.dart';
 import 'package:flutter_app/_components/ContainerBase.dart';
 import 'package:flutter_app/_components/FormControl.dart';
@@ -61,8 +64,10 @@ class _View_RegisterState extends State<View_Register> {
                       Button(
                         type: 'solid',
                         text: 'Login',
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/login');
+                        onPressed: ()  {
+                          // SharedPreferences localStorage = await SharedPreferences.getInstance();
+                          // print(localStorage.getString('token'));
+                          // Navigator.pushNamed(context, '/login');
                         },
                         butonColor: color('primary'),
                       ),
