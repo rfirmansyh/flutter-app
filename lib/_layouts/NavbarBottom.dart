@@ -20,7 +20,9 @@ class _NavbarBottomState extends State<NavbarBottom> {
           children: <Widget>[
             FlatButton(
               padding: EdgeInsets.all(10.0),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/member');
+              },
               child: Column(
                 children: <Widget>[
                   Container(
@@ -41,7 +43,9 @@ class _NavbarBottomState extends State<NavbarBottom> {
             ),
             FlatButton(
               padding: EdgeInsets.all(10.0),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/camerapreview');
+              },
               child: Column(
                 children: <Widget>[
                   Container(
@@ -62,7 +66,9 @@ class _NavbarBottomState extends State<NavbarBottom> {
             ),
             FlatButton(
               padding: EdgeInsets.all(10.0),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/explore');
+              },
               child: Column(
                 children: <Widget>[
                   Container(
