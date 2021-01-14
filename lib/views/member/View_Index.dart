@@ -80,8 +80,8 @@ class _View_IndexState extends State<View_Index> {
                   ),
                 ),
                 Container(
-                  height: 400,
-                  padding: EdgeInsets.only(top: 20, bottom: 60),
+                  height: 525,
+                  padding: EdgeInsets.only(top: 20, ),
                   child: ListView.builder(
                     itemCount: 3,
                     itemBuilder: (BuildContext context, int index) {

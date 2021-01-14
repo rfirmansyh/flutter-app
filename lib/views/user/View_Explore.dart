@@ -37,6 +37,7 @@ class _View_ExploreState extends State<View_Explore> {
     );
   }}
 
+
   //Card berita
   class CardBerita extends StatelessWidget {
   @override
@@ -44,7 +45,7 @@ class _View_ExploreState extends State<View_Explore> {
    return GestureDetector(
      onTap: () {
        Navigator.pushNamed(context, '/member/show', 
-          arguments: "asu"
+          arguments: "asa"
         );
         print('asdf');
      },
@@ -124,12 +125,13 @@ class _View_ExploreState extends State<View_Explore> {
                         Row (
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+
                           Container (
-                            child: Text ('P'),
+                            child: new Image.asset('images/share.png', height: 15, width: 15,),
                             margin: EdgeInsets.all(9.0),
                           ),
                           Container (
-                            child: Text ('B'),
+                            child: new Image.asset('images/view.png', height: 40, width: 20,),
                             margin: EdgeInsets.all(9.0),
                           ),
                         ],)
@@ -207,7 +209,16 @@ class _BodyIndexState extends State<BodyIndex> {
               ),
             ),
           ),
-          CardBerita(),
+          Container(
+            height: 525,
+            padding: EdgeInsets.only(top: 20, ),
+            child: ListView.builder(
+                itemCount: 3,
+                itemBuilder: (BuildContext context, int index) {
+                  return CardBerita();
+                }
+            ),
+          )
         ],
       ),
     );

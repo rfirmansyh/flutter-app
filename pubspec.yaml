@@ -55,6 +55,8 @@ flutter:
     - images/misc/svg/
     - images/misc/png/
     - images/food_places/
+    - images/view.png
+    - images/share.png
     # - images/cute.gif
   #   - images/a_dot_ham.jpeg
 

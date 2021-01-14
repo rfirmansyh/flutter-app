@@ -465,7 +465,7 @@ class Modal {
                             children: [
                               RaisedButton(
                                 onPressed: () {
-                                  // Navigator.pushNamed(context, '/show');
+                                  Navigator.pushNamed(context, '/member/show');
                                 },
                                 textColor: Colors.white,
                                 padding: const EdgeInsets.only(
