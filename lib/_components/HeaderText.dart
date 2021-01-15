@@ -6,14 +6,14 @@ import 'package:flutter_app/_base/color.dart';
 
 class HeaderText {
 
-  static Widget Title(String text, {EdgeInsets margin, TextAlign textAlign}) {
+  static Widget Title(String text, {EdgeInsets margin, TextAlign textAlign, Color textcolor}) {
     return Container(
       margin: (margin == null) ? EdgeInsets.only(bottom: 5) : margin,
       child: Text(text,
         textAlign: textAlign,
         style: TextStyle(
           fontWeight: FontWeight.w800,
-          color: color('dark'),
+          color: textcolor != null ? textcolor : color('dark'),
           fontSize: 16.0,
         )
       ),

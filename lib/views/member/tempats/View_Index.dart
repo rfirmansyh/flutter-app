@@ -115,7 +115,7 @@ class _View_IndexState extends State<View_Index> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBarLayouts(
-          appName: 'Back', is_back_nav: false,
+          appName: 'Watklin', is_back_nav: false,
         ),
         endDrawer: Sidebar(
           child: ListView(

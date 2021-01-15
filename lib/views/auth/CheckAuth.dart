@@ -42,9 +42,9 @@ class _CheckAuthState extends State<CheckAuth> {
     var future = new Future.delayed(const Duration(milliseconds: 1000), () async {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       var token = localStorage.getString('token');
-      User user = User.fromJson(json.decode(localStorage.get('user')));
-
+      User user = null;
       if(token != null){
+        user = User.fromJson(json.decode(localStorage.get('user')));
         setState(() {
           _isAuth = true;
         });

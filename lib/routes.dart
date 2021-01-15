@@ -9,6 +9,7 @@ import 'package:flutter_app/views/auth/View_Register.dart' as auth;
 // MEMBER TEMPAT
 import 'package:flutter_app/views/member/tempats/View_Index.dart' as member_tempats;
 import 'package:flutter_app/views/member/tempats/View_Show.dart' as member_tempats;
+import 'package:flutter_app/views/member/tempats/View_Average.dart' as member_tempats;
 
 // ADMIN
 import 'package:flutter_app/views/admin/View_Index.dart' as admin;
@@ -38,6 +39,7 @@ final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
   // MEMBER : TEMPAT
   "/member/tempats"    : (context) => member_tempats.View_Index(),
   "/member/tempats/show"    : (context) => member_tempats.View_Show(),
+  "/member/tempats/average"    : (context) => member_tempats.View_Average(),
 
   // TESTING
   "/test/imagepick"           : (context) => test.ImagePickerTest(),
