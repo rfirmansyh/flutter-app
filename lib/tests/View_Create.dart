@@ -268,8 +268,8 @@ class _View_CreateState extends State<View_Create> {
 
     var data = {
       'name' : name,
-      'photo' : _imageFile != null ? File(_imageFile.path).path.split('/').last : null,
-      'image' : base64Image != null ? base64Image : null,
+      'photo' : File(_imageFile.path).path.split('/').last,
+      'image' : base64Image,
       'description' : description,
       'rating_sanitasi' : rating_sanitasi,
       'province_id' : selectedProvince.getId,
@@ -280,11 +280,11 @@ class _View_CreateState extends State<View_Create> {
     var body = await json.decode(res.body);
     print(body['data']);
 
-    if (body['code'] == 200){
-      _formKey.currentState?.reset();
-      _kabupatenKey.currentState?.changeSelectedItem(null);
-      _provinceKey.currentState?.changeSelectedItem(null);
-    }
+    // if (body['code'] == 200){
+    //   _formKey.currentState?.reset();
+    //   _kabupatenKey.currentState?.changeSelectedItem(null);
+    //   _provinceKey.currentState?.changeSelectedItem(null);
+    // }
 
     
   }
@@ -336,24 +336,55 @@ class _View_CreateState extends State<View_Create> {
   }
   Widget previewImage() {
     if (_imageFile != null) {
-      return Container(
-        width: double.infinity,
-        height: 160,
-        child: Image.file(
-          File(_imageFile.path),
-          fit: BoxFit.cover,
+      return  Container(
+        width: 180,
+        height: 200,
+        decoration: BoxDecoration(
+          border: Border.all(
+              width: 8,
+              color: Theme
+                  .of(context)
+                  .scaffoldBackgroundColor),
+          boxShadow: [
+            BoxShadow(
+                spreadRadius: 5,
+                blurRadius: 5,
+                color: Colors.pink.withOpacity(0.50),
+                offset: Offset(0, 5))
+          ],
+          shape: BoxShape.circle,
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: FileImage(
+              File(_imageFile.path)
+            )
+          )
         ),
       );
     } else {
-      return Container(
-        width: double.infinity,
-        height: 160,
-        child: Center(
-          child: Text('No Image Upload')
-        ),
+      return  Container(
+        width: 180,
+        height: 200,
         decoration: BoxDecoration(
-          color: color('link'),
-          borderRadius: BorderRadius.circular(5)
+          border: Border.all(
+              width: 8,
+              color: Theme
+                  .of(context)
+                  .scaffoldBackgroundColor),
+          boxShadow: [
+            BoxShadow(
+                spreadRadius: 5,
+                blurRadius: 5,
+                color: Colors.pink.withOpacity(0.50),
+                offset: Offset(0, 5))
+          ],
+          shape: BoxShape.circle,
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(
+                "assets/adit.JPG",
+              ),
+          )
         ),
       );
     }

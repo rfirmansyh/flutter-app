@@ -16,7 +16,7 @@ class _NavbarBottomState extends State<NavbarBottom> {
         height: 84,
         padding: EdgeInsets.only(top: 6),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FlatButton(
               padding: EdgeInsets.all(10.0),
@@ -49,27 +49,6 @@ class _NavbarBottomState extends State<NavbarBottom> {
                       margin: EdgeInsets.only(bottom: 3)),
                   Text(
                     'Data Nilai \nTempat',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 9),
-                  ),
-                ],
-              ),
-            ),
-            Container (
-              width: 1,
-              height: 50,
-              color: color('link'),
-            ),
-            FlatButton(
-              padding: EdgeInsets.all(10.0),
-              onPressed: () {},
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    child: Icon(Icons.explore),
-                    margin: EdgeInsets.only(bottom: 3)),
-                  Text(
-                    'Explore Berita \nSanitasi',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 9),
                   ),

@@ -10,7 +10,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Nunito'),
-      initialRoute: '/admin/tempats',
+      initialRoute: '/checkauth',
       routes: routes,
       builder: EasyLoading.init(),
     );

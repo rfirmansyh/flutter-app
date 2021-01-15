@@ -1,6 +1,16 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/_components/FormControl.dart';
+import 'package:flutter_app/_models/Review.dart';
+import 'package:flutter_app/_models/Sum.dart';
+import 'package:flutter_app/_models/Tempat.dart';
+import 'package:flutter_app/_models/User.dart';
+import 'package:flutter_app/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:flutter_app/_base/color.dart';
 import 'package:flutter_app/_components/ContainerBase.dart';
@@ -16,353 +26,449 @@ class View_Show extends StatefulWidget {
 }
 
 class _View_ShowState extends State<View_Show> {
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> star = new List<Widget>();
-    for (var i = 5; i >= 1; i--) {
-      star.add(Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Container(
-            child: Text(
-              i.toString(),
-              style: TextStyle(
-                  fontSize: 10,
-                  color: color('dark'),
-                  fontWeight: FontWeight.bold),
-            ),
-            margin: EdgeInsets.only(right: 10),
-          ),
-          Expanded(
-            child: Container(
-              height: 6,
-              color: color('link'),
-              child: FractionallySizedBox(
-                alignment: Alignment.centerLeft,
-                widthFactor: (i / 10),
-                heightFactor: 1,
-                child: Container(
-                  color: color('primary'),
-                ),
-              ),
-            ),
-          )
-        ],
-      ));
+
+    var id_tempat;
+    User user;
+    Tempat tempat;
+    List<Review> reviews;
+    Sum sumRatings;
+
+    // store review
+    Review review = new Review();
+    
+    getUser() async {
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        if (localStorage.get('user') != null) {
+            setState(() {
+              user = User.fromJson(json.decode(localStorage.get('user')));
+            });
+        } else {
+            setState(() {
+              user = null;
+            });
+        }
     }
-    return Scaffold(
-      appBar: AppBarLayouts(appName: 'CLEAN WATER AND SANITATOIN : 6'),
-      body: ContainerBase(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeaderText.Title("Rincian Hasil Sanitasi"),
-                  HeaderText.Subtitle("Detail Rincian Tempat Hasil Sanitasi"),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 24,
-                          height: 24,
-                          color: color('link'),
-                          child: Icon(Icons.keyboard_arrow_left,
-                            color: color('secondary')
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-          // GAMBAR TEMPAT
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 240,
-            margin: EdgeInsets.only(bottom: 20.0),
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: color('link')),
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('images/food_places/1.png'))),
-          ),
-          // NAMA TEMPAT
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+
+    getTempat(id) async {
+        var res = await Network().getData('/tempats/$id');
+        var body = jsonDecode(res.body);
+        
+        // if has reviews
+        if (body['data'][0]['reviews'] != null) {
+            print(body['data'][0]['sum']);
+            List<Review> tempListReviews = await body['data'][0]['reviews'].map<Review>((item) => Review.fromJson(item)).toList();
+            Sum tempListSumRatings = await Sum.fromJson(body['data'][0]['sum']);
+            setState(() {
+                reviews = tempListReviews;
+                sumRatings = tempListSumRatings;
+            });
+        }
+
+        await setState(() {
+            tempat = Tempat.fromJson(body['data'][0]);
+        });
+
+        EasyLoading.dismiss();
+    }
+
+    void initState() {
+        super.initState();
+        EasyLoading.show(status: 'loading...');
+        getUser();
+        // future that allows us to access context. function is called inside the future
+        // otherwise it would be skipped and args would return null
+        Future.delayed(Duration.zero, () {
+        setState(() {
+            id_tempat = ModalRoute.of(context).settings.arguments;
+        });
+        getTempat(id_tempat);
+        });
+    }
+
+
+    void getStar(List<Widget> star) {
+        for (var i = 5; i >= 1; i--) {
+            star.add(Row(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 4.0),
-                    child: Text('Warung Pak Edi',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          decoration: TextDecoration.underline,
-                          color: color('dark'),
-                          fontSize: 16.0,
-                        )),
-                  ),
-                  Container(
-                    child: Text('Sumbersari, Jember',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: color('secondary'),
-                          fontSize: 10.0,
-                        )),
-                  ),
-                ],
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.only(bottom: 5),
-                  color: color('link'),
-                  width: 78,
-                  height: 38,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Text('Nilai Sanitasi',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: color('secondary'),
-                              fontSize: 8,
-                            )),
-                      ),
-                      Expanded(
-                        flex: 0,
-                        child: Text('4.1',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: color('success'),
-                              fontSize: 14,
-                            )),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          // DIVIDER
-          Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: Divider(color: color('secondary-500'))),
-          // BUAT REVIEW
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 4.0),
-                      child: Text('Review dan Komentar',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: color('dark'),
-                            fontSize: 14.0,
-                          )),
-                    ),
-                    Container(
-                      width: 180,
-                      child: Text('Nilai dari mereka yang sudah berkunjung',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: color('secondary'),
-                            fontSize: 10.0,
-                          )),
-                    ),
-                  ],
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    Modal.Show(
-                      context, 
-                      confirmText: 'Kirim Review', 
-                      height: MediaQuery.of(context).size.height - 180);
-                  },
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.only(
-                      top: 8, bottom: 8, left: 16, right: 16),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  color: color('primary'),
-                  child: Text(
-                    'Buat Review',
+                Container(
+                    child: Text(
+                    i.toString(),
                     style: TextStyle(
-                        color: color('white'),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 12),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // HASIL REVIEW
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Container(
-                    margin: EdgeInsets.only(right: 20),
-                    width: 82,
-                    height: 82,
-                    color: color('link'),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(bottom: 5),
-                          child: Text(
-                            '4.1',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: color('success'),
-                              fontSize: 24,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          '5',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: color('secondary'),
-                            fontSize: 10,
-                          ),
-                        )
-                      ],
+                        fontSize: 10,
+                        color: color('dark'),
+                        fontWeight: FontWeight.bold),
                     ),
-                  ),
+                    margin: EdgeInsets.only(right: 10),
                 ),
                 Expanded(
-                  child: Column(children: star),
+                    child: Container(
+                    height: 6,
+                    color: color('link'),
+                    child: FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: sumRatings != null ? double.parse(sumRatings.toJson()['sum_$i']) : 0,
+                        heightFactor: 1,
+                        child: Container(
+                        color: color('primary'),
+                        ),
+                    ),
+                    ),
                 )
-              ],
-            ),
-          ),
-          // RATING AND COMMENT
-          CardComment(),
-        ])),
-    );
-  }
+                ],
+            ));
+        }
+    }
+
+    void makeReview() async {
+        print(user);
+        review.tempatId = tempat.id;
+        review.userId = user.id;
+
+        var res = await Network().authPostData(review.toJson(), '/reviews');
+        var body = await json.decode(res.body);
+        print(body['data']);
+        Navigator.pushNamed(
+          context, 
+          '/member/tempats/show',
+          arguments: tempat.id
+      );
+    }
+
+    @override
+    Widget build(BuildContext context) {
+
+        List<Widget> star = new List<Widget>();
+        getStar(star);
+        
+
+        return Scaffold(
+        appBar: AppBarLayouts(
+          appName: 'Back', is_back_nav: true,
+          onBack: () {
+            Navigator.pushNamed(context, '/member/tempats');
+          },
+        ),
+        body: ContainerBase(
+            child: tempat == null ? Text('waiting dat..') : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+                // GAMBAR TEMPAT
+                Container(
+                width: MediaQuery.of(context).size.width,
+                height: 240,
+                margin: EdgeInsets.only(bottom: 20.0),
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: color('link')),
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: tempat.photo != null ? NetworkImage(Network().getImageUrl()+tempat.photo) :  AssetImage('images/food_places/default.png'),
+                    )
+                )
+                ),
+                // NAMA TEMPAT
+                Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                    Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Container(
+                            margin: EdgeInsets.only(bottom: 4.0),
+                            child: Text(tempat.name,
+                                style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                decoration: TextDecoration.underline,
+                                color: color('dark'),
+                                fontSize: 16.0,
+                                )),
+                        ),
+                        Container(
+                            child: Text('${tempat.kabupatenName}, ${tempat.provinceName}',
+                                style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: color('secondary'),
+                                fontSize: 10.0,
+                                )),
+                        ),
+                        ],
+                    ),
+                    ),
+                    ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Container(
+                        padding: EdgeInsets.all(5),
+                        margin: EdgeInsets.only(bottom: 5),
+                        color: color('link'),
+                        width: 78,
+                        height: 38,
+                        child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                            Expanded(
+                            flex: 1,
+                            child: Text('Nilai Sanitasi',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: color('secondary'),
+                                    fontSize: 8,
+                                )),
+                            ),
+                            Expanded(
+                            flex: 0,
+                            child: Text(tempat.ratingSanitasi != null ? tempat.ratingSanitasi.toString() : '0',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: color('success'),
+                                    fontSize: 14,
+                                )),
+                            ),
+                        ],
+                        ),
+                    ),
+                    ),
+                ],
+                ),
+                // DIVIDER
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Divider(color: color('secondary-500'))),
+                // BUAT REVIEW
+                Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Container(
+                            margin: EdgeInsets.only(bottom: 4.0),
+                            child: Text('Review dan Komentar',
+                                style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                color: color('dark'),
+                                fontSize: 14.0,
+                                )),
+                        ),
+                        Container(
+                            width: 180,
+                            child: Text('Nilai dari mereka yang sudah berkunjung',
+                                style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: color('secondary'),
+                                fontSize: 10.0,
+                                )),
+                        ),
+                        ],
+                    ),
+                    RaisedButton(
+                        onPressed: () {
+                        Modal.Show(
+                            context, 
+                            confirmText: 'Kirim Review', 
+                            onRated: (value) {
+                                setState(() {
+                                    review.rating = value;
+                                });
+                            },
+                            onChange: (value) {
+                                setState(() {
+                                    review.body = value;
+                                });
+                            },
+                            onSubmit: makeReview,
+                            height: MediaQuery.of(context).size.height - 180);
+                        },
+                        textColor: Colors.white,
+                        padding: const EdgeInsets.only(
+                            top: 8, bottom: 8, left: 16, right: 16),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        color: color('primary'),
+                        child: Text(
+                        'Buat Review',
+                        style: TextStyle(
+                            color: color('white'),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12),
+                        ),
+                    ),
+                    ],
+                ),
+                ),
+                // HASIL REVIEW
+                Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                        margin: EdgeInsets.only(right: 20),
+                        width: 82,
+                        height: 82,
+                        color: color('link'),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                            Container(
+                                margin: EdgeInsets.only(bottom: 5),
+                                child: Text(
+                                tempat.ratingReview != null ? tempat.ratingReview.toStringAsFixed(2) : '0',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: color('success'),
+                                    fontSize: 24,
+                                ),
+                                ),
+                            ),
+                            Text(
+                                tempat.review != null ? tempat.review.toString() : '0',
+                                style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: color('secondary'),
+                                fontSize: 10,
+                                ),
+                            )
+                            ],
+                        ),
+                        ),
+                    ),
+                    Expanded(
+                        child: Column(children: star),
+                    )
+                    ],
+                ),
+                ),
+                // RATING AND COMMENT
+                reviews != null ? ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: reviews.length,
+                    itemBuilder: (context, i) {
+                        return CardComment(
+                            imgUrl: reviews[i].photo,
+                            name: reviews[i].name,
+                            date: reviews[i].createdAt,
+                            rating: reviews[i].rating,
+                            body: reviews[i].body,
+                        );
+                    },
+                ) : Text('No Reviews...'),
+            ]
+            )
+        ),
+        );
+    }
 }
 
 class CardComment extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 16),
-            child: Row(
-              children: [
-                Container(
-                  width: 42,
-                  height: 42,
-                  margin: EdgeInsets.only(right: 16),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border:
-                          Border.all(color: color('link')),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('images/food_places/1.png'))),
+    String imgUrl;
+    String name;
+    DateTime date;
+    String body;
+    double rating;
+
+    CardComment({
+        Key key,
+        @required this.imgUrl,
+        @required this.name,
+        @required this.date,
+        @required this.body,
+        @required this.rating
+    }) : super(key: key);
+
+    @override
+    Widget build(BuildContext context) {
+        return Container(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+            Container(
+                margin: EdgeInsets.only(bottom: 16),
+                child: Row(
+                children: [
+                    Container(
+                        width: 42,
+                        height: 42,
+                        margin: EdgeInsets.only(right: 16),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            border:
+                                Border.all(color: color('link')),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: imgUrl != null && imgUrl != '' ? NetworkImage(imgUrl) : AssetImage('images/users/default-user.png')
+                            )
+                        ),
+                    ),
+                    Container(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Container(
+                            margin: EdgeInsets.only(bottom: 4.0),
+                            child: Text('$name',
+                                style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                color: color('dark'),
+                                fontSize: 14.0,
+                                )),
+                        ),
+                        Container(
+                            width: 180,
+                            child: Text('$date',
+                                style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: color('secondary'),
+                                fontSize: 10.0,
+                                )),
+                        ),
+                        ],
+                    ),
+                    ),
+                ],
                 ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(bottom: 4.0),
-                        child: Text('Rahmad Firmansyah',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              color: color('dark'),
-                              fontSize: 14.0,
-                            )),
-                      ),
-                      Container(
-                        width: 180,
-                        child: Text('2, 10 2020',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: color('secondary'),
-                              fontSize: 10.0,
-                            )),
-                      ),
-                    ],
-                  ),
+            ),
+            Container(
+                child: SmoothStarRating(
+                allowHalfRating: true,
+                isReadOnly: true,
+                starCount: 5,
+                rating: rating,
+                size: 20.0,
+                filledIconData: Icons.star,
+                halfFilledIconData: Icons.star_half,
+                color: color('primary'),
+                borderColor: color('primary'),
+                spacing: 0.0),
+            ),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: Text(
+                '$body',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10,
+                    color: color('secondary')),
                 ),
-              ],
             ),
-          ),
-          Container(
-            child: SmoothStarRating(
-              allowHalfRating: false,
-              isReadOnly: true,
-              starCount: 5,
-              rating: 3,
-              size: 20.0,
-              filledIconData: Icons.star,
-              halfFilledIconData: Icons.star,
-              color: color('primary'),
-              borderColor: color('primary'),
-              spacing: 0.0),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Enim mollis dui, ut semper nibh sed at tempus nibh. Fringilla et faucibus morbi vitae ullamcorper. Ultrices purus habitant sit elit sit dignissim feugiat ultricies ullamcorper. Facilisi quam tortor sed viverra ultrices enim.',
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10,
-                  color: color('secondary')),
-            ),
-          ),
-          Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: Divider(color: color('secondary-500'))),
-        ],
-      ),
-    );
-  }
+            Container(
+                margin: EdgeInsets.only(bottom: 10),
+                child: Divider(color: color('secondary-500'))),
+            ],
+        ),
+        );
+    }
 }
 
 class Modal {
@@ -370,7 +476,11 @@ class Modal {
   static void Show(BuildContext context, {
       Widget child, 
       String confirmText,
-      double height
+      double height,
+      Function onChange(value),
+      Function onRated(value),
+      Function onSubmit
+
     }) {
     showGeneralDialog(
         context: context,
@@ -430,15 +540,17 @@ class Modal {
                         ),
                         HeaderText.Title("Jumlah Rating", margin: EdgeInsets.only(bottom: 16)),
                         SmoothStarRating(
-                          allowHalfRating: false,
+                          allowHalfRating: true,
                           starCount: 5,
                           rating: 3,
                           size: 40.0,
                           filledIconData: Icons.star,
-                          halfFilledIconData: Icons.star,
+                          halfFilledIconData: Icons.star_half,
                           color: color('primary'),
                           borderColor: color('primary'),
-                          spacing: 0.0),
+                          spacing: 0.0,
+                          onRated: onRated,
+                        ),
                         // DIVIDER
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 20),
@@ -447,6 +559,7 @@ class Modal {
                           labelText: 'comment', 
                           hintText: 'comment', 
                           isTextArea: true,
+                          onChange: onChange,
                         ),
                         Expanded(
                           child: Row(
@@ -455,9 +568,7 @@ class Modal {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               RaisedButton(
-                                onPressed: () {
-                                  // Navigator.pushNamed(context, '/show');
-                                },
+                                onPressed: onSubmit,
                                 textColor: Colors.white,
                                 padding: const EdgeInsets.only(
                                     top: 12, bottom: 12, left: 24, right: 24),

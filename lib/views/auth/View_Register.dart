@@ -1,4 +1,8 @@
+import 'dart:convert';
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +21,25 @@ class View_Register extends StatefulWidget {
 }
 
 class _View_RegisterState extends State<View_Register> {
+  final _formKey = GlobalKey<FormState>();
+  var name;
+  var email;
+  var password;
+
+
+  void register() async {
+    var data = {
+      'name' : name,
+      'email' : email,
+      'password' : password
+    };
+
+    var res = await Network().postData(data, '/register');
+    var body = json.decode(res.body);
+    print(body);
+    Navigator.pushNamed(context, '/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,54 +49,91 @@ class _View_RegisterState extends State<View_Register> {
           Scaffold(
             appBar: AppBarLayouts(appName: 'CLEAN WATER AND SANITATOIN : 6'),
             body: ContainerBase(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [
-                  HeaderText.Title('Mendaftar'),
-                  HeaderText.Subtitle('Buat Akun Baru'),
-                  FormControl(
-                    labelText: "Nama Lengkap",
-                    hintText: "Ex: John Doe",
-                  ),
-                  FormControl(
-                    labelText: "Username",
-                    hintText: "Ex: johndoe",
-                  ),
-                  FormControl(
-                    labelText: "Password",
-                    hintText: "Fill with the strong password",
-                    isPasswordField: true,
-                  ),
-                  FormControl(
-                    labelText: "Verifikasi Password",
-                    hintText: "Fill with password above",
-                    isPasswordField: true,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget> [
-                      Button(
-                        margin: EdgeInsets.only(right: 10),
-                        type: 'outline',
-                        text: 'Register',
-                        onPressed: () {},
-                        butonColor: color('primary'),
-                      ),
-                      Button(
-                        type: 'solid',
-                        text: 'Login',
-                        onPressed: ()  {
-                          // SharedPreferences localStorage = await SharedPreferences.getInstance();
-                          // print(localStorage.getString('token'));
-                          // Navigator.pushNamed(context, '/login');
-                        },
-                        butonColor: color('primary'),
-                      ),
-                    ],
-                  )
-                ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget> [
+                    HeaderText.Title('Mendaftar'),
+                    HeaderText.Subtitle('Buat Akun Baru', margin: EdgeInsets.only(bottom: 20)),
+                    FormControl(
+                      labelText: "Nama Lengkap",
+                      hintText: "Ex: John Doe",
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter email';
+                        }
+                        name = value;
+                        return null;
+                      },
+                    ),
+                    FormControl(
+                      labelText: "Email",
+                      hintText: "Input Your Email here...",
+                      validator: (emailValue) {
+                        if (emailValue.isEmpty) {
+                          return 'Please enter email';
+                        }
+                        email = emailValue;
+                        return null;
+                      },
+                    ),
+                    FormControl(
+                      labelText: "Password",
+                      hintText: "Input Your Password here...",
+                      validator: (passwordValue) {
+                        if (passwordValue.isEmpty) {
+                          return 'Please enter some text';
+                        } else if (passwordValue.length  < 6) {
+                          return 'Password minimal 6 Karakter';
+                        }
+                        password = passwordValue;
+                        return null;
+                      },
+                      isPasswordField: true,
+                    ),
+                    FormControl(
+                      labelText: "Verifikasi Password",
+                      hintText: "Fill with password above",
+                      isPasswordField: true,
+                      validator: (passwordValue) {
+                        if (passwordValue != password) {
+                          return 'Password Tidak Cocok';
+                        }
+                        return null;
+                      },
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget> [
+                        Button(
+                          margin: EdgeInsets.only(right: 10),
+                          type: 'outline',
+                          text: 'Login',
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/login');
+                          },
+                          butonColor: color('primary'),
+                        ),
+                        Button(
+                          type: 'solid',
+                          text: 'Register',
+                          onPressed: ()  {
+                            if (_formKey.currentState.validate()) {
+                              register();
+                            }
+                            // SharedPreferences localStorage = await SharedPreferences.getInstance();
+                            // print(localStorage.getString('token'));
+                            // Navigator.pushNamed(context, '/login');
+                          },
+                          butonColor: color('primary'),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             )
           ),

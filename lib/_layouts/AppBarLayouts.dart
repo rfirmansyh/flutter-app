@@ -8,11 +8,15 @@ class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
   final AppBar appBar = AppBar();
   String appName;
   bool is_back_nav;
+  bool add_menu;
+  Function onBack;
 
   AppBarLayouts({
     Key key, 
     @required this.appName,
-    this.is_back_nav = false
+    this.add_menu = true,
+    this.is_back_nav = false,
+    this.onBack
   }) : super(key: key);
 
   @override
@@ -43,7 +47,7 @@ class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
             ],
           )
         ),
-        actions: <Widget>[
+        actions: add_menu ? <Widget>[
           IconButton(
             color: color('primary'),
             icon: Icon(Icons.menu),
@@ -51,7 +55,7 @@ class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
               Scaffold.of(context).openEndDrawer();
             },
           ),
-        ],
+        ] : <Widget>[Text('')],
       );
     } else {
       return AppBar(
@@ -59,6 +63,10 @@ class AppBarLayouts extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         iconTheme: IconThemeData(
           color: color('primary'), //change your color here
+        ),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: onBack != null ? onBack : () => Navigator.of(context).pop(false),
         ),
         title: Container(
           child: Row(

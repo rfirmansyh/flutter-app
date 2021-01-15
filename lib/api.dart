@@ -40,6 +40,7 @@ class Network {
 
   authPostData(data, apiUrl) async {
     var fullUrl = _url + apiUrl;
+    await _getToken();
     return await http.post(
       fullUrl,
       body: data == null ? null : jsonEncode(data),

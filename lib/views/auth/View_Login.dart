@@ -58,14 +58,14 @@ class _View_loginState extends State<View_login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget> [
                     HeaderText.Title('Selamat Datang Kembali'),
-                    HeaderText.Subtitle('Lorem Ipsum Dolor sit amet amet'),
+                    HeaderText.Subtitle('Lorem Ipsum Dolor sit amet amet', margin: EdgeInsets.only(bottom: 20)),
                     FormControl(
-                      labelText: "Username",
-                      hintText: "Input Your username here...",
+                      labelText: "Email",
+                      hintText: "Input Your Email here...",
                       validator: (emailValue) {
-                        // if (emailValue.isEmpty) {
-                        //   return 'Please enter email';
-                        // }
+                        if (emailValue.isEmpty) {
+                          return 'Please enter email';
+                        }
                         email = emailValue;
                         return null;
                       },
@@ -74,9 +74,9 @@ class _View_loginState extends State<View_login> {
                       labelText: "Password",
                       hintText: "Input Your Password here...",
                       validator: (passwordValue) {
-                        // if (passwordValue.isEmpty) {
-                        //   return 'Please enter some text';
-                        // }
+                        if (passwordValue.isEmpty) {
+                          return 'Please enter some text';
+                        }
                         password = passwordValue;
                         return null;
                       },
@@ -136,8 +136,8 @@ class _View_loginState extends State<View_login> {
       _isLoading = true;
     });
     var data = {
-      'email' : 'fsyah7052@gmail.com',
-      'password' : '123123'
+      'email' : email,
+      'password' : password
     };
 
     var res = await Network().authData(data, '/login');
@@ -148,7 +148,7 @@ class _View_loginState extends State<View_login> {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', json.encode(body['data']['api_token']));
       localStorage.setString('user', json.encode(body['data']));
-      Navigator.pushNamed(context, '/tempats');
+      Navigator.pushNamed(context, '/checkauth');
     }else{
       print(body['status']);
     }

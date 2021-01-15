@@ -114,7 +114,7 @@ class CardFoodPlace extends StatelessWidget {
                               ),
                               Expanded(
                                 flex: 0,
-                                child: Text(this.ratingSanitasi != null ? this.ratingSanitasi.toString() : '0',
+                                child: Text(this.ratingSanitasi != null ? this.ratingSanitasi.toStringAsFixed(2) : '0',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w800,
                                       color:
@@ -149,7 +149,7 @@ class CardFoodPlace extends StatelessWidget {
                               ),
                               Expanded(
                                 flex: 0,
-                                child: Text(this.ratingReview != null ? this.ratingReview.toString() : '0',
+                                child: Text(this.ratingReview != null ? this.ratingReview.toStringAsFixed(2) : '0',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w800,
                                       color:
